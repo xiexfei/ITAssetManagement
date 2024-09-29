@@ -1,0 +1,111 @@
+{% extends 'property/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  {% if action == 'scrap' %}
+    <h2 class="text-danger">确认报废并删除资产 {{ asset.host_name }} 吗？</h2>
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">删除</button>
+      <a href="{% url 'asset_list' %}" class="btn btn-secondary">取消</a>
+    </form>
+  
+  {% elif action == 'idle' %}
+    <h2 class="text-danger">确认资产 {{ asset.host_name }} 设置为闲置吗？</h2>
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">确定</button>
+      <a href="{% url 'asset_list' %}" class="btn btn-secondary">取消</a>
+    </form>
+
+  {% elif action == 'assetedit' %}
+    <h2 class="text-center">编辑资产 {{ asset.host_name }}</h2>
+    <form method="post" class="needs-validation" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="host_name" class="form-label">设备名称</label>
+        <input type="text" class="form-control" style="width: 300px;" name="host_name" value="{{ form.host_name.value }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="service_tag" class="form-label">设备序列号</label>
+        <input type="text" class="form-control" style="width: 300px;" name="service_tag" value="{{ form.service_tag.value }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="host_type" class="form-label">设备类别</label>
+        <select class="form-select" style="width: 300px;" name="host_type" id="host_type" required>
+          {% for type in host_type_list %}
+            <option value="{{ type.id }}" {% if type.id == asset.host_type.id %}selected{% endif %}>
+              {{ type.type_name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="host_model" class="form-label">设备型号</label>
+        <input type="text" class="form-control" style="width: 300px;" name="host_model" value="{{ form.host_model.value }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="receive_date" class="form-label">采购日期</label>
+        <input type="date" class="form-control" style="width: 300px;" name="receive_date" value="{{ asset.receive_date|date:'Y-m-d' }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="host_user" class="form-label">使用用户</label>
+        <select class="form-select" style="width: 300px;" name="host_user" id="host_user" required onchange="updateDepartment()">
+            {% for host_user in user_list %}
+                <option value="{{ host_user.id }}" {% if host_user.id == asset.host_user.id %}selected{% endif %} data-department="{{ host_user.department.id }}">
+                    {{ host_user.fullname }} ({{ host_user.user_name }})
+                </option>
+            {% endfor %}
+        </select>
+    </div>    
+      <div class="mb-3">
+        <label for="host_status" class="form-label">设备状态</label>
+        <select class="form-select" style="width: 300px;" name="host_status" required>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if asset.host_status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="remark" class="form-label">备注</label>
+        <textarea class="form-control" style="width: 300px;" name="remark">{{ form.remark.value }}</textarea>
+      </div>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-primary">保存修改</button>
+        <a href="{% url 'asset_list' %}" class="btn btn-secondary">取消</a>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+<script>
+  // 启用 Bootstrap 的表单验证
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
+  // 自动更新部门
+  function updateDepartment() {
+    const userSelect = document.getElementById('host_user');
+    const selectedOption = userSelect.options[userSelect.selectedIndex];
+    const departmentId = selectedOption.getAttribute('data-department');
+    
+    // 使用 AJAX 或直接更新页面显示
+    const departmentDisplay = document.getElementById('department-display');
+    departmentDisplay.textContent = selectedOption.text.split(' (')[0]; // 显示用户的全名
+}
+
+// 初始化显示当前用户的部门
+updateDepartment();
+</script>
+{% endblock %}

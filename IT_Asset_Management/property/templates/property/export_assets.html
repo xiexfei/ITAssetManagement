@@ -1,0 +1,23 @@
+{% extends 'property/base.html' %}
+
+{% block title %}
+  导出资产信息
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>导出资产信息</h2>
+    <p>点击下面的按钮下载所有资产信息的 CSV 文件。</p>
+    <a href="{% url 'export_assets' %}" class="btn btn-primary">下载资产信息</a>
+    <a href="{% url 'asset_list' %}" class="btn btn-secondary">返回资产列表</a>
+</div>
+
+{% if messages %}
+    <div class="alert alert-dismissible fade show mt-3" role="alert">
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+{% endblock %}

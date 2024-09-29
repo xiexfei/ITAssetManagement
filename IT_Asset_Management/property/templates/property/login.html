@@ -1,0 +1,30 @@
+{% extends 'property/base.html' %}
+
+{% block title %}用户登录{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">用户登录</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">用户名</label>
+            <input type="text" class="form-control" style="width: 300px;" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">密码</label>
+            <input type="password" class="form-control" style="width: 300px;" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">登录</button>
+    </form>
+    {% if messages %}
+        <div class="mt-3">
+            <ul class="list-unstyled">
+                {% for message in messages %}
+                    <li class="alert alert-info">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

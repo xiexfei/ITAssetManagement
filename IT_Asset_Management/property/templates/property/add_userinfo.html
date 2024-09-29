@@ -1,0 +1,40 @@
+{% extends 'property/base.html' %}
+
+{% block title %}
+  添加用户
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>添加用户</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="user_name" class="form-label">账户名</label>
+        <input type="text" name="user_name" class="form-control" style="width: 300px;" required>
+      </div>
+      <div class="mb-3">
+        <label for="fullname" class="form-label">姓名</label>
+        <input type="text" name="fullname" class="form-control" style="width: 300px;">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">邮箱</label>
+        <input type="email" name="email" class="form-control" style="width: 300px;" required>
+      </div>
+      <div class="mb-3">
+        <label for="department" class="form-label">所属部门</label>
+        <select name="department" class="form-select" style="width: 300px;" required>
+            {% for dept in form.department.field.queryset %}
+                <option value="{{ dept.id }}" 
+                    {% if dept.id == form.department.value %}selected{% endif %}>
+                    {{ dept.dept_name }} 
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">添加用户</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

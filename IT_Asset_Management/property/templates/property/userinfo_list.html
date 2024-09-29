@@ -1,0 +1,46 @@
+{% extends 'property/base.html' %}
+
+{% block title %}
+  用户列表
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>用户列表</h2>
+    <div class="mb-3">
+      <a href="{% url 'add_userinfo' %}" class="btn btn-success">添加用户</a>
+      <a href="{% url 'import_userinfos' %}" class="btn btn-primary">导入用户</a>
+      <a href="{% url 'export_userinfos' %}" class="btn btn-info">导出用户</a>
+    </div>
+
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>账户名</th>
+          <th>姓名</th>
+          <th>邮箱</th>
+          <th>所属部门</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for userinfo in userinfo %}
+          <tr>
+            <td>{{ userinfo.user_name }}</td>
+            <td>{{ userinfo.fullname }}</td>
+            <td>{{ userinfo.email }}</td>
+            <td>{{ userinfo.department.dept_name }}</td>
+            <td>
+              <a href="{% url 'manage_userinfo' userinfo.id 'useredit' %}" class="btn btn-primary">编辑</a>
+              <a href="{% url 'manage_userinfo' userinfo.id 'delete' %}" class="btn btn-danger">删除</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">没有找到用户。</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

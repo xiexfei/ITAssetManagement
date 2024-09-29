@@ -1,0 +1,55 @@
+{% extends 'property/base.html' %}
+{% load static %}
+{% load tz %} 
+
+{% block title %}
+  登记资产
+{% endblock %}
+
+{% block content %}
+    <h2>填写资产信息</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="host_name" class="form-label">设备名称</label>
+            <input type="text" name="host_name" class="form-control" style="width: 300px;" value="{{ form.host_name.value|default:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="service_tag" class="form-label">设备序列号</label>
+            <input type="text" name="service_tag" class="form-control" style="width: 300px;" value="{{ form.service_tag.value|default:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="host_type" class="form-label">设备类别</label>
+            <select name="host_type" class="form-select" style="width: 300px;" required>
+                {% for type in form.host_type.field.queryset %}
+                    <option value="{{ type.id }}" 
+                        {% if type.id == form.host_type.value %}selected{% endif %}>
+                        {{ type.type_name }} 
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="host_model" class="form-label">设备型号</label>
+            <input type="text" name="host_model" class="form-control" style="width: 300px;" value="{{ form.host_model.value|default:'' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="receive_date" class="form-label">采购日期</label>
+            <input type="date" name="receive_date" class="form-control" style="width: 300px;" 
+                   value="{{ form.receive_date.value|date:'Y-m-d' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="host_status" class="form-label">设备状态</label>
+            <select name="host_status" class="form-select" style="width: 300px;" required>
+                {% for value, label in form.host_status.field.choices %}
+                    <option value="{{ value }}" {% if value == form.host_status.value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </form>
+{% endblock %}

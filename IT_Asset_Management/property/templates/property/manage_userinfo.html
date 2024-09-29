@@ -1,0 +1,40 @@
+{% extends 'property/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  {% if action == 'delete' %}
+    <h2 class="text-danger">您确认要删除用户 {{ userinfo.user_name }} 吗？</h2>
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">确认删除</button>
+      <a href="{% url 'userinfo_list' %}" class="btn btn-secondary">取消</a>
+    </form>
+
+  {% elif action == 'useredit' %}
+    <h2 class="text-center">编辑用户 {{ userinfo.user_name }}信息</h2>
+    <form method="post" class="needs-validation" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="user_name" class="form-label">账户名</label>
+        {{ form.user_name }}
+      </div>
+      <div class="mb-3">
+        <label for="fullname" class="form-label">姓名</label>
+        {{ form.fullname }}
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">邮箱</label>
+        {{ form.email }}
+      </div>
+      <div class="mb-3">
+        <label for="department" class="form-label">所属部门</label>
+        {{ form.department }}
+      </div>    
+      <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-primary">保存修改</button>
+        <a href="{% url 'userinfo_list' %}" class="btn btn-secondary">取消</a>
+      </div>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

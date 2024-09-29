@@ -1,0 +1,21 @@
+{% extends 'property/base.html' %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>用户管理</h2>
+    <a href="{% url 'import_userinfos' %}" class="btn btn-primary">导入用户</a>
+    <a href="{% url 'export_userinfos' %}" class="btn btn-success">导出用户</a>
+
+    {% if messages %}
+        <div class="mt-3">
+            <ul class="list-unstyled">
+                {% for message in messages %}
+                    <li class="alert alert-info">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

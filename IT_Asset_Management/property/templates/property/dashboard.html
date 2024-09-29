@@ -1,0 +1,95 @@
+{% extends 'property/base.html' %}
+
+{% block title %}
+  首页
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="jumbotron text-center">
+      <h1>欢迎使用资产管理系统</h1>
+      <p>轻松管理您的资产信息</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title">资产总数</h5>
+            <p class="card-text">{{ total_assets }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card text-white bg-warning">
+          <div class="card-body">
+            <h5 class="card-title">闲置资产</h5>
+            <p class="card-text">{{ idle_assets }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card text-white bg-primary">
+          <div class="card-body">
+            <h5 class="card-title">使用中资产</h5>
+            <p class="card-text">{{ in_use_assets }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card text-white bg-danger">
+          <div class="card-body">
+            <h5 class="card-title">报废资产</h5>
+            <p class="card-text">{{ discarded_assets }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="mt-4">资产管理功能</h4>
+    <div class="row mt-3">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">添加新资产</h5>
+            <p class="card-text">快速添加您的资产信息。</p>
+            <a href="{% url 'add_asset' %}" class="btn btn-success">添加资产</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">导入资产</h5>
+            <p class="card-text">批量导入资产信息。</p>
+            <a href="{% url 'import_assets' %}" class="btn btn-info">导入资产</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">导出资产</h5>
+            <p class="card-text">导出您的资产信息为 CSV 文件。</p>
+            <a href="{% url 'export_assets' %}" class="btn btn-warning">导出资产</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">资产统计</h5>
+            <p class="card-text">查看资产的详细统计信息。</p>
+            <a href="{% url 'asset_statistics' %}" class="btn btn-secondary">查看统计</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="mt-4">重要通知</h3>
+    <div class="alert alert-info" role="alert">系统持续开发中，尽请期待。</div>
+  </div>
+{% endblock %}
